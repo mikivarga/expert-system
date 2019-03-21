@@ -6,7 +6,7 @@
 /*   By: mvarga <mvarga@student.unit.ua>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 13:01:53 by mvarga            #+#    #+#             */
-/*   Updated: 2019/03/21 13:02:47 by mvarga           ###   ########.fr       */
+/*   Updated: 2019/03/21 14:36:38 by mvarga           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int		main(int argc, char **argv)
 {
-
+	(void)argc;
+	(void)argv;
 	return (0);
 }
