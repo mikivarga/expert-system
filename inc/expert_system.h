@@ -20,6 +20,13 @@
 # define MAX_READ 1024
 # define BUFF_SIZE MAX_READ * 4
 
+# define RED(string) "\x1b[31m" string "\x1b[0m"
+# define GREEN(string) "\x1b[32m" string "\x1b[0m"
+# define YELLOW(string) "\x1b[33m" string "\x1b[0m"
+# define BLUE(string) "\x1b[34m" string "\x1b[0m"
+# define PINK(string) "\x1b[35m" string "\x1b[0m"
+
+
 int					get_line(const int fd, char *line);
 
 #endif
