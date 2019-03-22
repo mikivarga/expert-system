@@ -16,16 +16,20 @@
 
 int		main(int argc, char **argv)
 {
-	if (argc > 1 && argc < 4)
+	if (argc == 2)
 	{
 
 	}
+	else if (argc == 3 && ft_strcmp(argv[1], "-e") == 0)
+	{
+		
+	}
 	else
 	{
-		ft_printf("=> "RED("Error") " !\n");
+		ft_printf("=> [" RED("Error") "] !\n");
+		return (0);
 	}
-	
-	(void)argc;
+
 	(void)argv;
 	return (0);
 }
