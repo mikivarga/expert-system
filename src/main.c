@@ -26,6 +26,7 @@ int		main(int argc, char **argv)
 	}
 	else
 	{
+
 		ft_printf("=> [" RED("Error") "] !\n");
 		return (0);
 	}
