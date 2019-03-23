@@ -26,6 +26,18 @@
 # define BLUE(string) "\x1b[34m" string "\x1b[0m"
 # define PINK(string) "\x1b[35m" string "\x1b[0m"
 
+#define ALPHA 0
+#define STATUS 1
+#define FACTS 2
+#define SYSTEM 3
+typedef struct s_expert
+{
+    char *arr[SYSTEM];
+    char **rules;
+    char *facts;
+    char *querues;
+}               t_expert;
+
 int					get_line(const int fd, char *line);
 void                display(int lim, ...);
 
