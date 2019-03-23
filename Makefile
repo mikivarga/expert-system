@@ -20,7 +20,7 @@ SRC_DIR = src
 OBJ_DIR = obj
 LIB_DIR = lib
 
-SRC = $(addprefix $(SRC_DIR)/, main.c get_next_line.c)
+SRC = $(addprefix $(SRC_DIR)/, main.c parser.c get_next_line.c display.c)
 OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 INC = $(addprefix $(INC_DIR)/, expert_system.h)
 

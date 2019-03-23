@@ -1,33 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mvarga <mvarga@student.unit.ua>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/21 13:01:53 by mvarga            #+#    #+#             */
-/*   Updated: 2019/03/21 14:36:38 by mvarga           ###   ########.fr       */
+/*   Created: 2019/03/23 12:08:26 by mvarga            #+#    #+#             */
+/*   Updated: 2019/03/23 12:31:44 by mvarga           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expert_system.h"
 
-int		main(int argc, char **argv)
+void		display(int lim, ...)
 {
-	if (argc == 2)
-	{
+	va_list	ap;
+	int		i;
 
-	}
-	else if (argc == 3 && ft_strcmp(argv[2], "-d") == 0)
+	i = 0;
+	sleep(1);
+	va_start(ap, lim);
+	while (i++ < lim)
 	{
-		
+		ft_printf("%s", va_arg(ap, const char *));
 	}
-	else
-	{
-		display(4, "[", RED("ERROR"), "] => ", YELLOW("incorrect input\n"));
-		return (0);
-	}
-
-	(void)argv;
-	return (0);
+	va_end(ap);
 }

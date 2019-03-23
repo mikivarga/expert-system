@@ -26,7 +26,8 @@
 # define BLUE(string) "\x1b[34m" string "\x1b[0m"
 # define PINK(string) "\x1b[35m" string "\x1b[0m"
 
-
 int					get_line(const int fd, char *line);
+void                display(int lim, ...);
+
 
 #endif
