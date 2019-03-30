@@ -43,6 +43,8 @@ int		main(int argc, char **argv)
 
 	ft_bzero(data.facts, MAX_FACTS_QUERIES);
 	ft_bzero(data.queries, MAX_FACTS_QUERIES);
+	data.rules = NULL;
+	data.number_rules = 0;
 	if (argc == 2)
 	{
 		err = read_file(&data, argv[1]);

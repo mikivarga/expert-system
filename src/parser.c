@@ -12,12 +12,75 @@
 
 #include "expert_system.h"
 
+/*
+
+void				save_rooms(t_map *pmap, char *str)
+{
+	char	**pp;
+	char	**old_rooms;
+	int		i;
+
+	i = 0;
+	if (!*str)
+		return ;
+	if (!(pp = (char **)malloc(sizeof(char *) * (pmap->number_of_rooms + 2))))
+		exit_func(pmap, "Unable to allocate memory!");
+	old_rooms = pmap->the_rooms;
+	while (pmap->number_of_rooms && old_rooms[i])
+	{
+		if (!ft_strcmp(old_rooms[i], str))
+		{
+			free(pp);
+			exit_func(pmap, ERR_MSG);
+		}
+		pp[i] = old_rooms[i];
+		i++;
+	}
+	pp[i++] = ft_strdup(str);
+	pp[i] = 0;
+	if (pmap->number_of_rooms++)
+		free(old_rooms);
+	pmap->the_rooms = pp;
+}
+
+*/
+
+
+static int add_rules(t_expert *data, char *str)
+{
+    char *pp;
+    char **old_rules;
+    int i;
+
+    i = 0;
+    //if ()
+
+
+    (void)pp;
+    (void)old_rules;
+    (void)i;
+    (void)data;
+    (void)str;
+    return (TRUE);
+}
+
 static int save_rules(t_expert *data, char *buf)
 {
+    char **ptr;
+    //char **tmp;
+
+    ptr = data->rules;
+    while (NULL != ptr && NULL != *ptr)
+    {
+        if (0 == ft_strcmp(*ptr++, buf))
+        {
+            return (TRUE);
+        }
+    }
+    
     ft_printf("rules %s\n", buf);
-    (void)data;
-    (void)buf;
-    return (TRUE);
+    (void)*ptr;
+    return (add_rules(data, buf));
 }
 
 static int save_facts_queries(t_expert *data, char *buf, char place)

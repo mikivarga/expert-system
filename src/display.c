@@ -34,11 +34,11 @@ void		show_err(const char *str)
 void		show_err_character(const char *str, const char c, const char place)
 {
 	show_err(str);
-	if (place == FACTS_SMB)
+	if (FACTS_SMB == place)
 	{
     	ft_printf("%c%s", c, YELLOW("' in FACTS\n"));
 	}
-    else if (place == QUERIES_SMB)
+    else if (QUERIES_SMB == place)
 	{
         ft_printf("%c%s", c, YELLOW("' in QUERIES\n"));
 	}

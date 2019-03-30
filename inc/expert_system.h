@@ -43,6 +43,7 @@
 
 typedef struct s_expert
 {
+    int number_rules;
     char *arr[SYSTEM];
     char facts[MAX_FACTS_QUERIES];
     char queries[MAX_FACTS_QUERIES];
