@@ -12,3 +12,70 @@
 
 #include "expert_system.h"
 
+static int save_rules(t_expert *data, char *buf)
+{
+    ft_printf("rules %s\n", buf);
+    (void)data;
+    (void)buf;
+    return (TRUE);
+}
+
+static int save_facts_queries(t_expert *data, char *buf)
+{
+    char *ptr;
+    char *tmp;
+    char place;
+
+    ptr = (FACTS_SMB == *buf ? data->facts : data->queries);
+    place = *buf;
+    while (*++buf)
+    {
+        if (TRUE == IS_ALPHA(*buf))
+        {
+            tmp = ptr;
+            while (*tmp)
+            {
+                if (*tmp == *buf)
+                    break ;
+                tmp++;
+            }
+        }
+        else
+        {
+            show_err_character(YELLOW("invalid character '"), *buf, place);
+            return (FALSE);
+        }
+        *tmp = *buf;
+    }
+    return (TRUE);
+}
+
+int save_line(t_expert *data, char *buf)
+{
+    char *ptr;
+    char str[BUFF_SIZE];
+
+    if (NULL != (ptr = ft_strchr(buf, IS_COMMENT)))
+    {
+        *ptr = '\0';
+    }
+    if (TRUE == EMPTY_LINE(*buf))
+    {
+        return (TRUE);
+    }
+    ptr = str;
+    while (*buf)
+    {
+        if (FALSE == IS_SPACE(*buf))
+        {
+            *ptr++ = *buf;
+        }
+        buf++;
+    }
+    *ptr = '\0';
+    if (FACTS_SMB == *str || QUERIES_SMB == *str)
+    {
+        return (save_facts_queries(data, str));
+    }
+    return (save_rules(data, str));
+}
