@@ -48,12 +48,16 @@ void				save_rooms(t_map *pmap, char *str)
 
 static int add_rules(t_expert *data, char *str)
 {
+    static int nmb = 2;
     char *pp;
     char **old_rules;
     int i;
 
     i = 0;
-    //if ()
+    if (NULL == (pp = (char **)malloc(sizeof(char *) * (nmb++ + 2))))
+    {
+	    //	exit_func(pmap, "Unable to allocate memory!");
+    }
 
 
     (void)pp;
@@ -77,7 +81,32 @@ static int save_rules(t_expert *data, char *buf)
             return (TRUE);
         }
     }
-    
+    /*
+    int i;
+
+    i = 0;
+    while (line[i])
+    {
+        if (line[i] <= 'Z' && line[i] >= 'A')
+            i++;
+        else if (line[i] == '(' || line[i] == ')')
+            i++;
+        else if (line[i] == '+' || line[i] == '|' || line[i] == '^')
+            i++;
+        else if (ft_strncmp(line + i, "=>", 2) == 0)
+            i+=2;
+        else if (ft_strncmp(line + i, "<=>", 3) == 0)
+            i+=3;
+        else if (line[i] == '!')
+            i++;
+        else
+            return (-1);
+    }
+    return (1);
+}
+
+
+    */
     ft_printf("rules %s\n", buf);
     (void)*ptr;
     return (add_rules(data, buf));
