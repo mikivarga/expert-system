@@ -42,7 +42,7 @@
 # define STATUS 1
 # define FACTS 2
 # define SYSTEM 3
-# define MAX_FACTS_QUERIES 27
+# define MAX 27
 
 # define IS_COMMENT '#'
 # define FACTS_SMB '='
@@ -50,15 +50,17 @@
 
 typedef struct s_expert
 {
-    char *arr[SYSTEM];
-    char facts[MAX_FACTS_QUERIES];
-    char queries[MAX_FACTS_QUERIES];
+    int view;
+    char solver[SYSTEM][MAX];
+    char facts[MAX];
+    char queries[MAX];
     char **rules;
 }               t_expert;
 
 int get_line(const int fd, char *line);
-void show_err(const char *str);
-void		show_err_parsing(const char *str, const char *buf);
 int save_line(t_expert *data, char *str);
+void algorithm(t_expert *data);
+void show_err(const char *str);
+void show_err_parsing(const char *str, const char *buf);
 
 #endif

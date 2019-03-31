@@ -21,7 +21,6 @@ void free_data(t_expert *data)
 		tmp = data->rules;
 		while (*tmp)
 		{
-			//ft_printf("rules %s\n", *tmp);
 			free(*tmp++);
 		}
 		free(data->rules);
@@ -50,17 +49,30 @@ static int read_file(t_expert *data, const char *path_to_file)
         }
     }
     close(fd);
-	printf("facts %s\nqueries %s\n", data->facts, data->queries);
+	if (data->rules == NULL) //check if rules || queries or facts != 0;
+	{
+		show_err(YELLOW("NO RULES\n"));
+		return (FALSE);
+	}
     return (TRUE);
+}
+
+static void init(t_expert *data)
+{
+	data->view = FALSE;
+	ft_bzero(data->solver[DATA], MAX);
+	ft_bzero(data->solver[STATUS], MAX);
+	ft_bzero(data->solver[FACTS], MAX);
+	ft_bzero(data->facts, MAX);
+	ft_bzero(data->queries, MAX);
+	data->rules = NULL;
 }
 
 int		main(int argc, char **argv)
 {
 	t_expert	data;
 
-	ft_bzero(data.facts, MAX_FACTS_QUERIES);
-	ft_bzero(data.queries, MAX_FACTS_QUERIES);
-	data.rules = NULL;
+	init(&data);
 	if (argc == 2)
 	{
 		if (FALSE == read_file(&data, argv[1]))
@@ -68,16 +80,19 @@ int		main(int argc, char **argv)
 			free_data(&data);
 		}
 	}
-	else if (argc == 3 && ft_strcmp(argv[2], "-v") == 0)
+	else if (argc == 3 && ft_strcmp(argv[1], "-v") == 0)
 	{
-		
+		data.view = TRUE;
+		if (FALSE == read_file(&data, argv[2]))
+		{
+			free_data(&data);
+		}
 	}
 	else
 	{
 		show_err(YELLOW("incorrect input\n"));
 		return (0);
 	}
-
-	(void)argv;
+	algorithm(&data);
 	return (0);
 }
