@@ -15,6 +15,7 @@
 
 # include <unistd.h>
 # include <fcntl.h>
+# include <stdlib.h>
 # include "./../lib/libft/inc/libft.h"
 # include "./../lib/ft_printf/inc/ft_printf.h"
 
@@ -51,7 +52,7 @@ typedef struct s_expert
 
 int get_line(const int fd, char *line);
 void show_err(const char *str);
-void show_err_character(const char *str, const char c, const char place);
+void		show_err_parsing(const char *str, const char *buf);
 int save_line(t_expert *data, char *str);
 
 #endif

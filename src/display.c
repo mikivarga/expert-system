@@ -31,19 +31,20 @@ void		show_err(const char *str)
 {
 	display(4, "[", RED("ERROR"), "] => ", str);
 }
-void		show_err_character(const char *str, const char c, const char place)
+
+void		show_err_parsing(const char *str, const char *buf)
 {
 	show_err(str);
-	if (FACTS_SMB == place)
+	if (FACTS_SMB == *buf)
 	{
-    	ft_printf("%c%s", c, YELLOW("' in FACTS\n"));
+    	ft_printf("%s%s", buf + 1, YELLOW("' in FACTS\n"));
 	}
-    else if (QUERIES_SMB == place)
+    else if (QUERIES_SMB == *buf)
 	{
-        ft_printf("%c%s", c, YELLOW("' in QUERIES\n"));
+        ft_printf("%s%s", buf + 1, YELLOW("' in QUERIES\n"));
 	}
 	else
 	{
-		ft_printf("%c%s", c, YELLOW("' in RULS\n"));
+		ft_printf("%s%s", buf, YELLOW("' in RULS\n"));
 	}
 }

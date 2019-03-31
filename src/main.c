@@ -12,6 +12,23 @@
 
 #include "expert_system.h"
 
+void free_data(t_expert *data)
+{
+	char **tmp;
+
+	if (data->rules)
+	{
+		tmp = data->rules;
+		while (*tmp)
+		{
+			//ft_printf("rules %s\n", *tmp);
+			free(*tmp++);
+		}
+		free(data->rules);
+	}
+	exit(EXIT_FAILURE);
+}
+
 int read_file(t_expert *data, const char *path_to_file)
 {
     int fd;
@@ -28,6 +45,7 @@ int read_file(t_expert *data, const char *path_to_file)
         if (FALSE == save_line(data, buf))
         {
             close(fd);
+			show_err_parsing(YELLOW("something wrong: '"), buf);
             return (FALSE);
         }
     }
@@ -38,16 +56,17 @@ int read_file(t_expert *data, const char *path_to_file)
 
 int		main(int argc, char **argv)
 {
-	int			err;
 	t_expert	data;
 
 	ft_bzero(data.facts, MAX_FACTS_QUERIES);
 	ft_bzero(data.queries, MAX_FACTS_QUERIES);
 	data.rules = NULL;
-	data.number_rules = 0;
 	if (argc == 2)
 	{
-		err = read_file(&data, argv[1]);
+		if (FALSE == read_file(&data, argv[1]))
+		{
+			free_data(&data);
+		}
 	}
 	else if (argc == 3 && ft_strcmp(argv[2], "-v") == 0)
 	{
