@@ -29,7 +29,7 @@ void free_data(t_expert *data)
 	exit(EXIT_FAILURE);
 }
 
-int read_file(t_expert *data, const char *path_to_file)
+static int read_file(t_expert *data, const char *path_to_file)
 {
     int fd;
     char buf[BUFF_SIZE];

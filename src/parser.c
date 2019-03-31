@@ -57,18 +57,12 @@ static int save_rules(t_expert *data, char *buf)
     i = 0;
     while (buf[i])
     {
-        if (buf[i] <= 'Z' && buf[i] >= 'A')
+        if (ALPHA(buf[i]) || BRACKETS(buf[i]) || SYMB(buf[i]))
             i++;
-        else if (buf[i] == '(' || buf[i] == ')')
-            i++;
-        else if (buf[i] == '+' || buf[i] == '|' || buf[i] == '^')
-            i++;
-        else if (ft_strncmp(buf + i, "=>", 2) == 0)
-            i+=2;
-        else if (ft_strncmp(buf + i, "<=>", 3) == 0)
-            i+=3;
-        else if (buf[i] == '!')
-            i++;
+        else if (0 == ft_strncmp(buf + i, "=>", 2))
+            i += 2;
+        else if (0 == ft_strncmp(buf + i, "<=>", 3))
+            i += 3;
         else
             return (FALSE);
     }
@@ -83,7 +77,7 @@ static int save_facts_queries(t_expert *data, char *buf)
     ptr = (FACTS_SMB == *buf ? data->facts : data->queries);
     while (*++buf)
     {
-        if (TRUE == IS_ALPHA(*buf))
+        if (TRUE == ALPHA(*buf))
         {
             tmp = ptr;
             while (*tmp)

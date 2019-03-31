@@ -27,8 +27,14 @@
 
 # define EMPTY_LINE(ch) ((ch) == '\n' || (ch) == '\0')
 # define IS_SPACE(ch) ((ch) == ' ' || ((ch) > 8 && (ch) < 14))
-# define NON_COMPLIANT_LINE(ch) (EMPTY_LINE((ch)) || IS_SPACE((ch)))
-# define IS_ALPHA(ch) ((ch) <= 'Z' && (ch) >= 'A')
+
+# define ALPHA(ch) ((ch) <= 'Z' && (ch) >= 'A')
+# define BRACKETS(ch) ((ch) == '(' || (ch) == ')')
+# define AND(ch) ((ch) == '+')
+# define NOT(ch) ((ch) == '!')
+# define OR(ch) ((ch) == '|')
+# define XOR(ch) ((ch) == '^')
+# define SYMB(ch) (AND((ch)) || OR((ch)) || XOR((ch)) || NOT((ch)))
 # define MAX_READ 1024
 # define BUFF_SIZE (MAX_READ * 4)
 
