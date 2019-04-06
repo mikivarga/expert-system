@@ -48,3 +48,19 @@ void		show_err_parsing(const char *str, const char *buf)
 		ft_printf("%s%s", buf, YELLOW("' in RULS\n"));
 	}
 }
+
+void free_data(t_expert *data)
+{
+	char **tmp;
+
+	if (data->rules)
+	{
+		tmp = data->rules;
+		while (*tmp)
+		{
+			free(*tmp++);
+		}
+		free(data->rules);
+	}
+	exit(EXIT_FAILURE);
+}

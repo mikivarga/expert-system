@@ -41,9 +41,37 @@ static int		add_rules(t_expert *data, char *str)
 	return (TRUE);
 }
 
+static int		checking_rules(char *buf, int flag)
+{
+	int i;
+
+	i = 0;
+	while (buf[i])
+	{
+		if (LETTER(buf[i]) || BRACKETS(buf[i]) || SYMB(buf[i]))
+		{
+			i++;
+		}
+		else if (TRUE == flag && 0 == ft_strncmp(buf + i, "=>", 2))
+		{
+			flag = FALSE;
+			i += 2;
+		}
+		else if (TRUE == flag && 0 == ft_strncmp(buf + i, "<=>", 3))
+		{
+			flag = FALSE;
+			i += 3;
+		}
+		else
+		{
+			return (FALSE);
+		}
+	}
+	return (TRUE);
+}
+
 static int		save_rules(t_expert *data, char *buf)
 {
-	int			i;
 	char		**ptr;
 
 	ptr = data->rules;
@@ -54,17 +82,20 @@ static int		save_rules(t_expert *data, char *buf)
 			return (TRUE);
 		}
 	}
-	i = 0;
-	while (buf[i])
+	if ('!' != buf[0])
 	{
-		if (ALPHA(buf[i]) || BRACKETS(buf[i]) || SYMB(buf[i]))
-			i++;
-		else if (0 == ft_strncmp(buf + i, "=>", 2))
-			i += 2;
-		else if (0 == ft_strncmp(buf + i, "<=>", 3))
-			i += 3;
-		else
-			return (FALSE);
+		if (FALSE == LETTER(buf[0]))
+		{
+			return FALSE;
+		}
+	}
+	/*else if (FALSE == LETTER(buf[0])) if need?
+	{
+		return FALSE;
+	}*/
+	if (FALSE == checking_rules(buf, TRUE))
+	{
+		return (FALSE);
 	}
 	return (add_rules(data, buf));
 }
@@ -77,7 +108,7 @@ static int		save_facts_queries(t_expert *data, char *buf)
 	ptr = (FACTS_SMB == *buf ? data->facts : data->queries);
 	while (*++buf)
 	{
-		if (TRUE == ALPHA(*buf))
+		if (TRUE == LETTER(*buf))
 		{
 			tmp = ptr;
 			while (*tmp)

@@ -28,7 +28,7 @@
 # define EMPTY_LINE(ch) ((ch) == '\n' || (ch) == '\0')
 # define IS_SPACE(ch) ((ch) == ' ' || ((ch) > 8 && (ch) < 14))
 
-# define ALPHA(ch) ((ch) <= 'Z' && (ch) >= 'A')
+# define LETTER(ch) ((ch) <= 'Z' && (ch) >= 'A')
 # define BRACKETS(ch) ((ch) == '(' || (ch) == ')')
 # define AND(ch) ((ch) == '+')
 # define NOT(ch) ((ch) == '!')
@@ -43,6 +43,10 @@
 # define FACTS 2
 # define SYSTEM 3
 # define MAX 27
+
+#define BEG 0
+#define END 1
+#define BEG_END 2
 
 # define IS_COMMENT '#'
 # define FACTS_SMB '='
@@ -63,4 +67,6 @@ void algorithm(t_expert *data);
 void show_err(const char *str);
 void show_err_parsing(const char *str, const char *buf);
 
+
+void free_data(t_expert *data);
 #endif

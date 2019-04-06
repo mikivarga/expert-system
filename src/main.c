@@ -12,20 +12,63 @@
 
 #include "expert_system.h"
 
-void free_data(t_expert *data)
+static void save_data(char *data, const char letter, char status, char facts)
 {
-	char **tmp;
+	*data = letter;
+	*(data + MAX) = status;
+	*(data + MAX * 2) = facts;
+}
 
-	if (data->rules)
-	{
-		tmp = data->rules;
-		while (*tmp)
-		{
-			free(*tmp++);
-		}
-		free(data->rules);
-	}
-	exit(EXIT_FAILURE);
+static void add_to_solver(t_expert *data)
+{
+    int i;
+    int j;
+    int z;
+
+    i = -1;
+    while (data->facts[++i])
+    {
+		save_data(&(data->solver[DATA][i]), data->facts[i], '+', '-');
+    }
+    i = -1;
+    while (data->queries[++i])
+    {
+        j = -1;
+        while (data->solver[DATA][++j])
+        {
+            if (data->solver[DATA][j] == data->queries[i])
+            {
+                break ;
+            }
+        }
+        if ('\0' == data->solver[DATA][j])
+        {
+			save_data(&(data->solver[DATA][j]), data->queries[i], '-', '-');
+        }
+    }
+    i = -1;
+    while (data->rules[++i])
+    {
+        j = -1;
+        while (data->rules[i][++j])
+        {
+            if (TRUE == LETTER(data->rules[i][j]))
+            {
+                z = -1;
+                while (data->solver[DATA][++z])
+                {
+                    if (data->solver[DATA][z] == data->rules[i][j])
+                    {
+                        break ;
+                    }
+                }
+                if ('\0' == data->solver[DATA][z])
+                {
+					save_data(&(data->solver[DATA][z]), data->rules[i][j], '-', '-');
+                }
+            }
+        }
+    }
 }
 
 static int read_file(t_expert *data, const char *path_to_file)
@@ -49,11 +92,12 @@ static int read_file(t_expert *data, const char *path_to_file)
         }
     }
     close(fd);
-	if (data->rules == NULL) //check if rules || queries or facts != 0;
+	if (data->rules == NULL) //check if rules || queries or facts != 0;????
 	{
 		show_err(YELLOW("NO RULES\n"));
 		return (FALSE);
 	}
+	add_to_solver(data);
     return (TRUE);
 }
 
