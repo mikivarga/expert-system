@@ -99,7 +99,7 @@ static int letters_is_true(t_expert *data, char *beg, int status, int stop)
             {
                 if ('!' == beg[i + 1])
                 {
-                    
+                    if ()
                 }
             }
             else
