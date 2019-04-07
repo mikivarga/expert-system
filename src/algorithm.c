@@ -233,7 +233,26 @@ static int     make_true(t_expert *data, char *str1, char *str2)
     }
 }*/
 
-static int rules_is_true(t_expert *data, char *str, int status, int stop)
+static int find(t_expert *data, char c, int flag)
+{
+    char *ptr;
+    
+    ptr = ft_strchr(data->solver, c);
+    if (*ptr)
+    {
+        if (STAT == flag)
+        {
+            return ('1' == *(ptr + STATUS);
+        }
+        else
+        {
+            return ('1' == *(ptr + FACTS);
+        }
+    }
+    return (FALSE);
+}
+
+int rules_is_true(t_expert *data, char *str, int status, int stop)
 {
     (void)data;
     (void)str;
@@ -243,12 +262,14 @@ static int rules_is_true(t_expert *data, char *str, int status, int stop)
     return (status);
 }
 
-static int decision_true(t_expert *data, char *l, char *r, int status)
+int decision_true(t_expert *data, char *l, char *r, int status)
 {
     int i;
-    //int j;
+    int j;
     int facts;
-    //char *ptr;
+    char *ptr;
+    (void)r;
+    (void)status;
 
     i = -1;
     while (l[++i])
@@ -257,29 +278,23 @@ static int decision_true(t_expert *data, char *l, char *r, int status)
         {
             continue ;
         }
-        if (NOT(l[i - 1]) && ('1' == (ft_strchr(data->solver, l[i]) + STATUS)))
+        if (TRUE == NOT(l[i - 1]) && (TRUE == find(data, l[i]), STAT))
         {
             ft_printf("\x1b[31mThere is a contradiction with \x1b[34m%c\x1b[0m\n", l[i]);
             exit(1);
         }
         else if (FALSE == NOT(l[i - 1]))
         {
-
-            //check prev amb;
-            /*j = -1;
-            while (str2[++i])
+            j = -1;
+            while (r[++j])
             {
-                j = -1;
-                while (data->solver[DATA][++j])
+                if (TRUE == (facts = (find(data, r[j], FACT))))
                 {
-                    if (data->solver[DATA][j] == str2[i] && '+' == data->solver[DATA][j + MAX *2])
-                    {
-                        status = TRUE;
-                    }
+                    break ;
                 }
-            }*/
+            }
 
-            facts = (OR(l[i - 1]) || OR(l[i + 1]) || XOR(l[i - 1]) || XOR(l[i + 1]) ? '1' : '0');
+            //facts = (OR(l[i - 1]) || OR(l[i + 1]) || XOR(l[i - 1]) || XOR(l[i + 1]) ? '1' : '0');
             //edit_value;
         }
     }
@@ -292,12 +307,12 @@ static int decision_true(t_expert *data, char *l, char *r, int status)
 void algorithm(t_expert *data, char *ptr, int i)
 {
     char str[MAX * 2];
-    int ret;
+    //int ret;
 
     while (1)
     {
         i = -1;
-        ret = FALSE;
+        //ret = FALSE;
         while (data->rules[++i])
         {
             ft_bzero(str, MAX * 2);
@@ -309,15 +324,15 @@ void algorithm(t_expert *data, char *ptr, int i)
             ft_strncpy(str, data->rules[i], ptr - (data->rules[i] + 1));
             if (ft_strchr(str, '<'))
             {
-                printf("MIKI\n");
+                ft_printf("MIKI\n");
             }
             //printf("%s\n%s\n\n", str, str + R);
-            if (TRUE == rules_is_true(data, str, FALSE, FALSE))
+            //if (TRUE == rules_is_true(data, str, FALSE, FALSE))
             {
-                ret = decision_true(data, str, str + R, FALSE);
+              //  ret = decision_true(data, str, str + R, FALSE);
             }
         }
-        if (FALSE == ret)
+        //if (FALSE == ret)
         {
             break ;
         }

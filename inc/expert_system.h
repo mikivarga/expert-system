@@ -38,10 +38,10 @@
 # define MAX_READ 1024
 # define BUFF_SIZE (MAX_READ * 4)
 
-# define DATA 0
-/*# define STATUS 1
-# define FACTS 2
-# define SYSTEM 3*/
+/*# define DATA 0*/
+# define STAT 1
+# define FACT 2
+/*# define SYSTEM 3*/
 # define MAX 27
 # define STATUS (MAX)
 # define FACTS (MAX * 2) 
