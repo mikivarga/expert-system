@@ -12,11 +12,11 @@
 
 #include "expert_system.h"
 
-static void save_data(char *data, const char letter, char status, char facts)
+static void save_to_solver(char *solver, const char letter, char status, char facts)
 {
-	*data = letter;
-	*(data + MAX) = status;
-	*(data + MAX * 2) = facts;
+    *solver = letter;
+    *(solver + STATUS) = status;
+    *(solver + FACTS) = facts; 
 }
 
 static void add_to_solver(t_expert *data)
@@ -28,22 +28,22 @@ static void add_to_solver(t_expert *data)
     i = -1;
     while (data->facts[++i])
     {
-		save_data(&(data->solver[DATA][i]), data->facts[i], '+', '-');
+        save_to_solver(&(data->solver[i]), data->facts[i], '1', '0');
     }
     i = -1;
     while (data->queries[++i])
     {
         j = -1;
-        while (data->solver[DATA][++j])
+        while (data->solver[++j])
         {
-            if (data->solver[DATA][j] == data->queries[i])
+            if (data->solver[j] == data->queries[i])
             {
                 break ;
             }
         }
-        if ('\0' == data->solver[DATA][j])
+        if ('\0' == data->solver[j])
         {
-			save_data(&(data->solver[DATA][j]), data->queries[i], '-', '-');
+			save_to_solver(&(data->solver[j]), data->queries[i], '0', '0');
         }
     }
     i = -1;
@@ -55,16 +55,16 @@ static void add_to_solver(t_expert *data)
             if (TRUE == LETTER(data->rules[i][j]))
             {
                 z = -1;
-                while (data->solver[DATA][++z])
+                while (data->solver[++z])
                 {
-                    if (data->solver[DATA][z] == data->rules[i][j])
+                    if (data->solver[z] == data->rules[i][j])
                     {
                         break ;
                     }
                 }
-                if ('\0' == data->solver[DATA][z])
+                if ('\0' == data->solver[z])
                 {
-					save_data(&(data->solver[DATA][z]), data->rules[i][j], '-', '-');
+					save_to_solver(&(data->solver[z]), data->rules[i][j], '0', '0');
                 }
             }
         }
@@ -104,9 +104,10 @@ static int read_file(t_expert *data, const char *path_to_file)
 static void init(t_expert *data)
 {
 	data->view = FALSE;
-	ft_bzero(data->solver[DATA], MAX);
-	ft_bzero(data->solver[STATUS], MAX);
-	ft_bzero(data->solver[FACTS], MAX);
+	//ft_bzero(data->solver[DATA], MAX);
+	//ft_bzero(data->solver[STATUS], MAX);
+	//ft_bzero(data->solver[FACTS], MAX);
+    ft_bzero(data->solver, MAX * 3);
 	ft_bzero(data->facts, MAX);
 	ft_bzero(data->queries, MAX);
 	data->rules = NULL;
@@ -137,6 +138,6 @@ int		main(int argc, char **argv)
 		show_err(YELLOW("incorrect input\n"));
 		return (0);
 	}
-	algorithm(&data);
+	algorithm(&data, NULL, -1);
 	return (0);
 }

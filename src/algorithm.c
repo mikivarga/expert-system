@@ -13,23 +13,6 @@
 #include "expert_system.h"
 
 /*
-static void rules_split(char *rules, char rules_res[][MAX])
-{
-    char *ptr;
-    
-    if ((ptr = ft_strchr(rules, '>')))
-    {
-        ft_strcpy(rules_res[END], ptr + 1);
-    }
-    while (*ptr == '=')// || *ptr == '<')
-    {
-        ptr--;
-    }
-    ft_strncpy(rules_res[BEG], rules, ptr - (rules + 1));
-}
-*/
-
-
 static int letters_is_true(t_expert *data, char *beg, int status, int stop)
 {
     int i;
@@ -85,21 +68,42 @@ static int letters_is_true(t_expert *data, char *beg, int status, int stop)
                         }
                     }
                 }
-                
             }
-            else
+            else if (NULL == ft_strchr(beg, '('))
             {
-                //if (ex && or_exist(first) && !fuck)
-                return (TRUE);
+                if (NULL != ft_strchr(beg, '|') && FALSE == stop)
+                {
+                    return (1);
+                }
             }
         }
         else if ('+' == beg[i])
         {
+            char *ptr;
+
             if (TRUE == status)
             {
                 if ('!' == beg[i + 1])
                 {
-                    if ()
+                    ptr = ft_strchr(data->solver[DATA], beg[i + 2]);
+                    if (*ptr)
+                    {
+                        if ('+' == *(ptr + MAX))
+                        {
+                            status = FALSE;
+                        }
+                    }
+                }
+                if (LETTER(beg[i + 1]))
+                {
+                    ptr = ft_strchr(data->solver[DATA], beg[i + 1]);
+                    if (*ptr)
+                    {
+                        if ('-' == *(ptr + MAX))
+                        {
+                            status = FALSE;
+                        }
+                    }
                 }
             }
             else
@@ -110,51 +114,215 @@ static int letters_is_true(t_expert *data, char *beg, int status, int stop)
         }
         else if ('^' == beg[i])
         {
+            char *ptr;
 
+            if (TRUE == status)
+            {
+                if ('!' == beg[i + 1])
+                {
+                    ptr = ft_strchr(data->solver[DATA], beg[i + 2]);
+                    if (*ptr)
+                    {
+                        if ('-' == *(ptr + MAX))
+                        {
+                            status = FALSE;
+                        }
+                    }
+                }
+                ptr = ft_strchr(data->solver[DATA], beg[i + 1]);
+                if (*ptr)
+                {
+                    if ('+' == *(ptr + MAX) && '-' == *(ptr + MAX * 2))
+                    {
+                        status = FALSE;
+                    }
+                }
+            }
+            else
+            {
+                if ('!' == beg[i + 1])
+                {
+                    ptr = ft_strchr(data->solver[DATA], beg[i + 2]);
+                    if (*ptr)
+                    {
+                        if ('-' == *(ptr + MAX))
+                        {
+                            status = TRUE;
+                        }
+                    }
+                }
+                ptr = ft_strchr(data->solver[DATA], beg[i + 1]);
+                if (*ptr)
+                {
+                    if ('+' == *(ptr + MAX))
+                    {
+                        status = TRUE;
+                    }
+                }
+            }
         }
         else if (TRUE == BRACKETS(beg[i]))
         {
 
         }
-        else
+        else if (i == 0) // (i - 1 < 0)
         {
-            
+            char *ptr;
+
+            ptr = ft_strchr(data->solver[DATA], beg[i + 1]);
+            if (*ptr)
+            {
+                if ('+' == *(ptr + MAX))
+                {
+                    status = TRUE;
+                }
+            }
         }
     }
-    ft_printf("  [DATA] = %s\n", data->solver[DATA]);
-    ft_printf("[STATUS] = %s\n", data->solver[STATUS]);
-    ft_printf(" [FACTS] = %s\n\n", data->solver[FACTS]);
+    //ft_printf("  [DATA] = %s\n", data->solver[DATA]);
+    //ft_printf("[STATUS] = %s\n", data->solver[STATUS]);
+    //ft_printf(" [FACTS] = %s\n\n", data->solver[FACTS]);
     (void)stop;
     (void)data;
     (void)beg;
     return (status);
 }
 
-void algorithm(t_expert *data)
+static int     make_true(t_expert *data, char *str1, char *str2)
 {
-    char rules_res[BEG_END][MAX];
-    char *ptr;
     int i;
+    int j;
+    int status;
+    char *ptr;
+
+    status = FALSE;
+    i = -1;
+    while (str2[++i])
+    {
+        j = -1;
+        while (data->solver[DATA][++j])
+        {
+            if (data->solver[DATA][j] == str2[i] && '+' == data->solver[DATA][j + MAX *2])
+            {
+                status = TRUE;
+            }
+        }
+    }
+    i = -1;
+    while (str1[i++])
+    {
+        if (LETTER(str1[i++]))
+        {
+            if (str1[i - 1] != '!')
+            {
+                if (str1[i - 1] == '|' || str1[i + 1] == '|' || str1[i - 1] == '^' || str1[i + 1] == '^' || status)
+                {
+
+                }
+                else
+                {
+                    
+                }
+                
+            }
+            if (str1[i - 1] == '!')
+            {
+
+            }
+        }
+    }
+}*/
+
+static int rules_is_true(t_expert *data, char *str, int status, int stop)
+{
+    (void)data;
+    (void)str;
+    (void)status;
+    (void)stop;
+
+    return (status);
+}
+
+static int decision_true(t_expert *data, char *l, char *r, int status)
+{
+    int i;
+    //int j;
+    int facts;
+    //char *ptr;
+
+    i = -1;
+    while (l[++i])
+    {
+        if (FALSE == LETTER(l[i]))
+        {
+            continue ;
+        }
+        if (NOT(l[i - 1]) && ('1' == (ft_strchr(data->solver, l[i]) + STATUS)))
+        {
+            ft_printf("\x1b[31mThere is a contradiction with \x1b[34m%c\x1b[0m\n", l[i]);
+            exit(1);
+        }
+        else if (FALSE == NOT(l[i - 1]))
+        {
+
+            //check prev amb;
+            /*j = -1;
+            while (str2[++i])
+            {
+                j = -1;
+                while (data->solver[DATA][++j])
+                {
+                    if (data->solver[DATA][j] == str2[i] && '+' == data->solver[DATA][j + MAX *2])
+                    {
+                        status = TRUE;
+                    }
+                }
+            }*/
+
+            facts = (OR(l[i - 1]) || OR(l[i + 1]) || XOR(l[i - 1]) || XOR(l[i + 1]) ? '1' : '0');
+            //edit_value;
+        }
+    }
+    if (FALSE != status)///global)
+        ft_printf("\x1b[34m%s\x1b[0m is now true because \x1b[36m%s\x1b[0m is true and implies \x1b[34m%s\x1b[0m\n", l, r, l);
+    return (status);
+}
+
+
+void algorithm(t_expert *data, char *ptr, int i)
+{
+    char str[MAX * 2];
+    int ret;
 
     while (1)
     {
         i = -1;
+        ret = FALSE;
         while (data->rules[++i])
         {
-            ft_bzero(rules_res[BEG], MAX * 2);
+            ft_bzero(str, MAX * 2);
             if ((ptr = ft_strchr(data->rules[i], '>')))
             {
-                ft_strcpy(rules_res[END], ptr + 1);
+                ft_strcpy(str + R, ptr + 1);
             }
             *ptr == '=' ? ptr-- : ptr;
-            ft_strncpy(rules_res[BEG], data->rules[i], ptr - (data->rules[i] + 1));
-            if (ft_strchr(rules_res[BEG], '<'))
+            ft_strncpy(str, data->rules[i], ptr - (data->rules[i] + 1));
+            if (ft_strchr(str, '<'))
             {
                 printf("MIKI\n");
             }
-            if (TRUE == letters_is_true(data, rules_res[BEG], FALSE, FALSE))
-                ft_printf("beg: %s\nend: %s\n\n", rules_res[BEG], rules_res[END]);
+            //printf("%s\n%s\n\n", str, str + R);
+            if (TRUE == rules_is_true(data, str, FALSE, FALSE))
+            {
+                ret = decision_true(data, str, str + R, FALSE);
+            }
         }
-        break ;
+        if (FALSE == ret)
+        {
+            break ;
+        }
     }
+    ft_printf("  [DATA] = %s\n", data->solver);
+    ft_printf("[STATUS] = %s\n", data->solver + STATUS);
+    ft_printf(" [FACTS] = %s\n\n", data->solver + FACTS);
 }
