@@ -268,31 +268,20 @@ static int make_decision(t_expert *data, char *goal, char *rule, int fact)
     char *ptr;
     int j;
 
-    j = -1;
-                 
+    j = -1;                 
     while (rule[++j])
     {
         if (TRUE == (fact = (find(data, rule[j], FACT))))
-        {
             break ;
-        }
     }
     if (OR(*(goal - 1)) || OR(*(goal + 1)))
-    {
         fact = TRUE;
-    }
     else if (XOR(*(goal - 1)) || XOR(*(goal + 1)))
-    {
         fact = TRUE;
-    }
     if (NULL == (ptr = ft_strchr(data->solver, *goal)))
-    {
         return (FALSE);
-    }
     if ('1' == *(ptr + STATUS))
-    {
         return (FALSE);
-    }
     *(ptr + STATUS) = '1';
     *(ptr + FACTS) = (TRUE == fact ? '1': '0');
     return (TRUE);
@@ -319,7 +308,7 @@ int decision(t_expert *data, char *goal, char *rule)
         }
         else if (FALSE == NOT(goal[i - 1]))
         {
-            status += make_decision(data, &(goal[i]), rule, FALSE);
+            status += make_decision(data, &(goal[i]), rule, FALSE); //+=
         }
     }
     if (FALSE != status)///global)
@@ -357,11 +346,9 @@ void algorithm(t_expert *data, char *ptr, int i)
             {
                 //ft_printf("first %s\nlast %s\n", str, str + R);
                 ret = decision(data, str + R, str);
-                
-                ft_printf("ret = %d\n", ret);
             }
         }
-        //if (FALSE == ret)
+        if (FALSE == ret)
         {
             break ;
         }
