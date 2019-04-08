@@ -238,15 +238,16 @@ static int find(t_expert *data, char c, int flag)
     char *ptr;
     
     ptr = ft_strchr(data->solver, c);
-    if (*ptr)
+
+    if (ptr)
     {
         if (STAT == flag)
         {
-            return ('1' == *(ptr + STATUS);
+            return ('1' == *(ptr + STATUS));
         }
         else
         {
-            return ('1' == *(ptr + FACTS);
+            return ('1' == *(ptr + FACTS));
         }
     }
     return (FALSE);
@@ -262,44 +263,69 @@ int rules_is_true(t_expert *data, char *str, int status, int stop)
     return (status);
 }
 
-int decision_true(t_expert *data, char *l, char *r, int status)
+static int make_decision(t_expert *data, char *goal, char *rule, int fact)
 {
-    int i;
-    int j;
-    int facts;
     char *ptr;
-    (void)r;
-    (void)status;
+    int j;
+
+    j = -1;
+                 
+    while (rule[++j])
+    {
+        if (TRUE == (fact = (find(data, rule[j], FACT))))
+        {
+            break ;
+        }
+    }
+    if (OR(*(goal - 1)) || OR(*(goal + 1)))
+    {
+        fact = TRUE;
+    }
+    else if (XOR(*(goal - 1)) || XOR(*(goal + 1)))
+    {
+        fact = TRUE;
+    }
+    if (NULL == (ptr = ft_strchr(data->solver, *goal)))
+    {
+        return (FALSE);
+    }
+    if ('1' == *(ptr + STATUS))
+    {
+        return (FALSE);
+    }
+    *(ptr + STATUS) = '1';
+    *(ptr + FACTS) = (TRUE == fact ? '1': '0');
+    return (TRUE);
+}
+
+int decision(t_expert *data, char *goal, char *rule)
+{
+    int status;
+    int i;
 
     i = -1;
-    while (l[++i])
+    status = FALSE;
+    while (goal[++i])
     {
-        if (FALSE == LETTER(l[i]))
+
+        if (FALSE == LETTER(goal[i]))
         {
             continue ;
         }
-        if (TRUE == NOT(l[i - 1]) && (TRUE == find(data, l[i]), STAT))
+        if (TRUE == NOT(goal[i - 1]) && (TRUE == find(data, goal[i], STAT)))
         {
-            ft_printf("\x1b[31mThere is a contradiction with \x1b[34m%c\x1b[0m\n", l[i]);
+            ft_printf("\x1b[31mThere is a contradiction with \x1b[34m%c\x1b[0m\n", goal[i]);
             exit(1);
         }
-        else if (FALSE == NOT(l[i - 1]))
+        else if (FALSE == NOT(goal[i - 1]))
         {
-            j = -1;
-            while (r[++j])
-            {
-                if (TRUE == (facts = (find(data, r[j], FACT))))
-                {
-                    break ;
-                }
-            }
-
-            //facts = (OR(l[i - 1]) || OR(l[i + 1]) || XOR(l[i - 1]) || XOR(l[i + 1]) ? '1' : '0');
-            //edit_value;
+            status += make_decision(data, &(goal[i]), rule, FALSE);
         }
     }
     if (FALSE != status)///global)
-        ft_printf("\x1b[34m%s\x1b[0m is now true because \x1b[36m%s\x1b[0m is true and implies \x1b[34m%s\x1b[0m\n", l, r, l);
+    {
+        ft_printf("\x1b[34m%s\x1b[0m is now true because \x1b[36m%s\x1b[0m is true and implies \x1b[34m%s\x1b[0m\n", goal, rule, goal);
+    }
     return (status);
 }
 
@@ -307,12 +333,12 @@ int decision_true(t_expert *data, char *l, char *r, int status)
 void algorithm(t_expert *data, char *ptr, int i)
 {
     char str[MAX * 2];
-    //int ret;
+    int ret;
 
     while (1)
     {
         i = -1;
-        //ret = FALSE;
+        ret = FALSE;
         while (data->rules[++i])
         {
             ft_bzero(str, MAX * 2);
@@ -329,7 +355,10 @@ void algorithm(t_expert *data, char *ptr, int i)
             //printf("%s\n%s\n\n", str, str + R);
             //if (TRUE == rules_is_true(data, str, FALSE, FALSE))
             {
-              //  ret = decision_true(data, str, str + R, FALSE);
+                //ft_printf("first %s\nlast %s\n", str, str + R);
+                ret = decision(data, str + R, str);
+                
+                ft_printf("ret = %d\n", ret);
             }
         }
         //if (FALSE == ret)
