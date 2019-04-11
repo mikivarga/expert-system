@@ -253,10 +253,29 @@ static int find(t_expert *data, char c, int flag)
     return (FALSE);
 }
 
-int rules_is_true(t_expert *data, char *str, int status, int stop)
+int rules_is_true(t_expert *data, char *s, int status, int stop)
 {
+    int i;
+    i = -1;
+    while(s[++i])
+    {
+        if (TRUE == LETTER(s[i]))
+        {
+            if (find(data, s[i - 1], STAT) && !NOT(s[i - 1]) && !XOR(s[i - 1]) &&  !AND(s[i - 1]))
+            {
+                status = TRUE;
+            }
+            if (find(data, s[i - 1], FACT))
+            {
+                status = TRUE;
+            }
+        }
+        /*else
+        {
+
+        }*/
+    }
     (void)data;
-    (void)str;
     (void)status;
     (void)stop;
 
@@ -287,13 +306,12 @@ static int make_decision(t_expert *data, char *goal, char *rule, int fact)
     return (TRUE);
 }
 
-int decision(t_expert *data, char *goal, char *rule)
+static int decision(t_expert *data, char *goal, char *rule, int *status)
 {
-    int status;
     int i;
 
     i = -1;
-    status = FALSE;
+    *status = FALSE;
     while (goal[++i])
     {
 
@@ -308,26 +326,26 @@ int decision(t_expert *data, char *goal, char *rule)
         }
         else if (FALSE == NOT(goal[i - 1]))
         {
-            status += make_decision(data, &(goal[i]), rule, FALSE); //+=
+           *status += make_decision(data, &(goal[i]), rule, FALSE); //+=
         }
     }
-    if (FALSE != status)///global)
+    if (FALSE != *status)///global)
     {
         ft_printf("\x1b[34m%s\x1b[0m is now true because \x1b[36m%s\x1b[0m is true and implies \x1b[34m%s\x1b[0m\n", goal, rule, goal);
     }
-    return (status);
+    return (*status);
 }
 
 
 void algorithm(t_expert *data, char *ptr, int i)
 {
     char str[MAX * 2];
-    int ret;
+    int find;
 
     while (1)
     {
         i = -1;
-        ret = FALSE;
+        find = FALSE;
         while (data->rules[++i])
         {
             ft_bzero(str, MAX * 2);
@@ -342,13 +360,13 @@ void algorithm(t_expert *data, char *ptr, int i)
                 ft_printf("MIKI\n");
             }
             //printf("%s\n%s\n\n", str, str + R);
-            //if (TRUE == rules_is_true(data, str, FALSE, FALSE))
+            if (TRUE == rules_is_true(data, str, FALSE, FALSE))
             {
                 //ft_printf("first %s\nlast %s\n", str, str + R);
-                ret = decision(data, str + R, str);
+                decision(data, str + R, str, &find);
             }
         }
-        if (FALSE == ret)
+        if (FALSE == find)
         {
             break ;
         }
