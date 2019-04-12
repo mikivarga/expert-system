@@ -12,227 +12,6 @@
 
 #include "expert_system.h"
 
-/*
-static int letters_is_true(t_expert *data, char *beg, int status, int stop)
-{
-    int i;
-
-    i = -1;
-    while (beg[++i])
-    {
-        if (LETTER(beg[i]))
-        {
-            char *ptr;
-
-            ptr = ft_strchr(data->solver[DATA], beg[i]);
-            if (*ptr)
-            {
-                if (i == 0 || (beg[i - 1] != '!' && beg[i - 1] != '^' && beg[i - 1] != '+'))
-                {
-                    if ('+' == *(ptr + MAX))
-                    {
-                        status = TRUE;
-                    }
-                }
-                if ('+' == *(ptr + MAX * 2))
-                {
-                    status = TRUE;
-                }
-            }
-        }
-        else if ('|' == beg[i])
-        {
-            char *ptr;
-
-            if (FALSE == status)
-            {
-                if (TRUE == LETTER(beg[i + 1]))
-                {
-                    ptr = ft_strchr(data->solver[DATA], beg[i + 1]);
-                    if (*ptr)
-                    {
-                        if ('+' == *(ptr + MAX))
-                        {
-                            status = TRUE;
-                        }
-                    }
-                }
-                else
-                {
-                    ptr = ft_strchr(data->solver[DATA], beg[i + 2]);
-                    if (*ptr)
-                    {
-                        if ('+' != *(ptr + MAX))
-                        {
-                            status = TRUE;
-                        }
-                    }
-                }
-            }
-            else if (NULL == ft_strchr(beg, '('))
-            {
-                if (NULL != ft_strchr(beg, '|') && FALSE == stop)
-                {
-                    return (1);
-                }
-            }
-        }
-        else if ('+' == beg[i])
-        {
-            char *ptr;
-
-            if (TRUE == status)
-            {
-                if ('!' == beg[i + 1])
-                {
-                    ptr = ft_strchr(data->solver[DATA], beg[i + 2]);
-                    if (*ptr)
-                    {
-                        if ('+' == *(ptr + MAX))
-                        {
-                            status = FALSE;
-                        }
-                    }
-                }
-                if (LETTER(beg[i + 1]))
-                {
-                    ptr = ft_strchr(data->solver[DATA], beg[i + 1]);
-                    if (*ptr)
-                    {
-                        if ('-' == *(ptr + MAX))
-                        {
-                            status = FALSE;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                status = FALSE;
-            }
-            
-        }
-        else if ('^' == beg[i])
-        {
-            char *ptr;
-
-            if (TRUE == status)
-            {
-                if ('!' == beg[i + 1])
-                {
-                    ptr = ft_strchr(data->solver[DATA], beg[i + 2]);
-                    if (*ptr)
-                    {
-                        if ('-' == *(ptr + MAX))
-                        {
-                            status = FALSE;
-                        }
-                    }
-                }
-                ptr = ft_strchr(data->solver[DATA], beg[i + 1]);
-                if (*ptr)
-                {
-                    if ('+' == *(ptr + MAX) && '-' == *(ptr + MAX * 2))
-                    {
-                        status = FALSE;
-                    }
-                }
-            }
-            else
-            {
-                if ('!' == beg[i + 1])
-                {
-                    ptr = ft_strchr(data->solver[DATA], beg[i + 2]);
-                    if (*ptr)
-                    {
-                        if ('-' == *(ptr + MAX))
-                        {
-                            status = TRUE;
-                        }
-                    }
-                }
-                ptr = ft_strchr(data->solver[DATA], beg[i + 1]);
-                if (*ptr)
-                {
-                    if ('+' == *(ptr + MAX))
-                    {
-                        status = TRUE;
-                    }
-                }
-            }
-        }
-        else if (TRUE == BRACKETS(beg[i]))
-        {
-
-        }
-        else if (i == 0) // (i - 1 < 0)
-        {
-            char *ptr;
-
-            ptr = ft_strchr(data->solver[DATA], beg[i + 1]);
-            if (*ptr)
-            {
-                if ('+' == *(ptr + MAX))
-                {
-                    status = TRUE;
-                }
-            }
-        }
-    }
-    //ft_printf("  [DATA] = %s\n", data->solver[DATA]);
-    //ft_printf("[STATUS] = %s\n", data->solver[STATUS]);
-    //ft_printf(" [FACTS] = %s\n\n", data->solver[FACTS]);
-    (void)stop;
-    (void)data;
-    (void)beg;
-    return (status);
-}
-
-static int     make_true(t_expert *data, char *str1, char *str2)
-{
-    int i;
-    int j;
-    int status;
-    char *ptr;
-
-    status = FALSE;
-    i = -1;
-    while (str2[++i])
-    {
-        j = -1;
-        while (data->solver[DATA][++j])
-        {
-            if (data->solver[DATA][j] == str2[i] && '+' == data->solver[DATA][j + MAX *2])
-            {
-                status = TRUE;
-            }
-        }
-    }
-    i = -1;
-    while (str1[i++])
-    {
-        if (LETTER(str1[i++]))
-        {
-            if (str1[i - 1] != '!')
-            {
-                if (str1[i - 1] == '|' || str1[i + 1] == '|' || str1[i - 1] == '^' || str1[i + 1] == '^' || status)
-                {
-
-                }
-                else
-                {
-                    
-                }
-                
-            }
-            if (str1[i - 1] == '!')
-            {
-
-            }
-        }
-    }
-}*/
-
 static int find(t_expert *data, char c, int flag)
 {
     char *ptr;
@@ -256,29 +35,110 @@ static int find(t_expert *data, char c, int flag)
 int rules_is_true(t_expert *data, char *s, int status, int stop)
 {
     int i;
+
     i = -1;
-    while(s[++i])
+    while (s[++i])
     {
         if (TRUE == LETTER(s[i]))
         {
-            if (find(data, s[i - 1], STAT) && !NOT(s[i - 1]) && !XOR(s[i - 1]) &&  !AND(s[i - 1]))
+            if (find(data, s[i], STAT) && !NOT(s[i - 1]) && !XOR(s[i - 1]) && !AND(s[i - 1]))
             {
                 status = TRUE;
             }
-            if (find(data, s[i - 1], FACT))
+            else if (find(data, s[i - 1], FACT))
             {
                 status = TRUE;
             }
         }
-        /*else
+        else if (TRUE == BRACKETS(s[i]))
         {
+            int prev;
 
-        }*/
+            prev = FALSE;
+            if (s[i] == '(')
+            {
+                prev = (TRUE == NOT(s[i - 1]) ? TRUE : FALSE);
+                status = rules_is_true(data, s + i + 1, status, TRUE);
+                while(s[i] && s[i] != ')')
+                {
+                    i++;
+                }
+                if (prev)
+                {
+                    status = (TRUE == status ? FALSE : TRUE);
+                }
+            }
+        }
+        else if (TRUE == AND(s[i]))
+        {
+            if (TRUE == status)
+            {
+                if (TRUE == LETTER(s[i + 1]) && FALSE == find(data, s[i + 1], STAT))
+                {
+                    status = FALSE;
+                }
+                else if (TRUE == NOT(s[i + 1]) && TRUE == find(data, s[i + 2], STAT))
+                {
+                    status = FALSE;
+                }
+            }
+            else
+            {
+                status = FALSE;
+            }    
+        }
+        else if (TRUE == OR(s[i]))
+        {
+            if (FALSE == status)
+            {
+                if (TRUE == LETTER(s[i + 1]) && TRUE == find(data, s[i + 1], STAT))
+                {
+                    status = TRUE;
+                }
+                else if (FALSE == find(data, s[i + 2], STAT))
+                {
+                    status = TRUE;
+                }
+            }
+            else if (NULL == ft_strchr(s, '('))
+            {
+                if (NULL != ft_strchr(s, '|') && FALSE == stop)
+                {
+                    return (TRUE);
+                }
+            }
+        }
+        else if (TRUE == XOR(s[i]))
+        {
+            if (TRUE == status)
+            {
+                if (TRUE == find(data, s[i + 1], STAT) && FALSE == find(data, s[i + 1], FACT))
+                {
+                    status = FALSE;
+                }
+                else if (TRUE == NOT(s[i + 1]) && FALSE == find(data, s[i + 2], STAT))
+                {
+                    status = FALSE;
+                }
+            }
+            else
+            {
+                if (TRUE == find(data, s[i + 1], STAT))
+                {
+                    status = TRUE;
+                }
+                else if (TRUE == NOT(s[i + 1]) && FALSE == find(data, s[i + 2], STAT))
+                {
+                    status = TRUE;
+                }
+            }
+        }
+        else if (0 == i && FALSE == find(data, s[ i++], STAT))
+        {
+            status = TRUE;
+        }
     }
-    (void)data;
-    (void)status;
     (void)stop;
-
     return (status);
 }
 
@@ -331,6 +191,7 @@ static int decision(t_expert *data, char *goal, char *rule, int *status)
     }
     if (FALSE != *status)///global)
     {
+        //dont show < !!!!
         ft_printf("\x1b[34m%s\x1b[0m is now true because \x1b[36m%s\x1b[0m is true and implies \x1b[34m%s\x1b[0m\n", goal, rule, goal);
     }
     return (*status);
@@ -350,28 +211,19 @@ void algorithm(t_expert *data, char *ptr, int i)
         {
             ft_bzero(str, MAX * 2);
             if ((ptr = ft_strchr(data->rules[i], '>')))
-            {
                 ft_strcpy(str + R, ptr + 1);
-            }
             *ptr == '=' ? ptr-- : ptr;
             ft_strncpy(str, data->rules[i], ptr - (data->rules[i] + 1));
-            if (ft_strchr(str, '<'))
+            if (ft_strchr(str, '<') && rules_is_true(data, str + R, FALSE, FALSE))
             {
-                ft_printf("MIKI\n");
+                decision(data, str, str + R, &find);
             }
-            //printf("%s\n%s\n\n", str, str + R);
-            if (TRUE == rules_is_true(data, str, FALSE, FALSE))
+            if (rules_is_true(data, str, FALSE, FALSE))
             {
-                //ft_printf("first %s\nlast %s\n", str, str + R);
                 decision(data, str + R, str, &find);
             }
         }
         if (FALSE == find)
-        {
             break ;
-        }
     }
-    ft_printf("  [DATA] = %s\n", data->solver);
-    ft_printf("[STATUS] = %s\n", data->solver + STATUS);
-    ft_printf(" [FACTS] = %s\n\n", data->solver + FACTS);
 }
