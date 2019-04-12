@@ -89,10 +89,6 @@ static int		save_rules(t_expert *data, char *buf)
 			return FALSE;
 		}
 	}
-	/*else if (FALSE == LETTER(buf[0])) if need?
-	{
-		return FALSE;
-	}*/
 	if (FALSE == checking_rules(buf, TRUE))
 	{
 		return (FALSE);

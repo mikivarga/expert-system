@@ -56,7 +56,6 @@
 typedef struct s_expert
 {
     int view;
-    //char solver[SYSTEM][MAX];
     char solver[MAX * 3];
     char facts[MAX];
     char queries[MAX];
@@ -68,6 +67,7 @@ int save_line(t_expert *data, char *str);
 void algorithm(t_expert *data, char *ptr, int i);
 void show_err(const char *str);
 void show_err_parsing(const char *str, const char *buf);
+void		display(int lim, ...);
 
 
 void free_data(t_expert *data);

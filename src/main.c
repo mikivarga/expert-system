@@ -92,7 +92,7 @@ static int read_file(t_expert *data, const char *path_to_file)
         }
     }
     close(fd);
-	if (data->rules == NULL) //check if rules || queries or facts != 0;????
+	if (data->rules == NULL)
 	{
 		show_err(YELLOW("NO RULES\n"));
 		return (FALSE);
@@ -104,13 +104,44 @@ static int read_file(t_expert *data, const char *path_to_file)
 static void init(t_expert *data)
 {
 	data->view = FALSE;
-	//ft_bzero(data->solver[DATA], MAX);
-	//ft_bzero(data->solver[STATUS], MAX);
-	//ft_bzero(data->solver[FACTS], MAX);
     ft_bzero(data->solver, MAX * 3);
 	ft_bzero(data->facts, MAX);
 	ft_bzero(data->queries, MAX);
 	data->rules = NULL;
+}
+
+static void show(t_expert *data)
+{
+    char *ptr;
+    int i;
+
+    i = -1;
+    while (data->queries[++i])
+    {
+        ptr = ft_strchr(data->solver, data->queries[i]);
+        if (ptr)
+        {
+            ft_printf("%c", data->queries[i]);
+            if ('1' == *(ptr + STATUS) && '1' == *(ptr + FACTS))
+            {
+                display(3, " => [", PINK("AMBIGUOUS"), "]\n");
+            }
+            else if ('1' == *(ptr + STATUS) && '0' == *(ptr + FACTS))
+            {
+                display(3, " => [", GREEN("TRUE"), "]\n");
+            }
+            else
+            {
+                display(3, " => [", RED("FALSE"), "]\n");
+            }
+        }
+    }
+}
+
+static void solver(t_expert *data)
+{
+    algorithm(data, NULL, -1);
+    show(data);
 }
 
 int		main(int argc, char **argv)
@@ -138,6 +169,6 @@ int		main(int argc, char **argv)
 		show_err(YELLOW("incorrect input\n"));
 		return (0);
 	}
-	algorithm(&data, NULL, -1);
+    solver(&data);
 	return (0);
 }

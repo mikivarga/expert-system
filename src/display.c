@@ -12,7 +12,7 @@
 
 #include "expert_system.h"
 
-static void		display(int lim, ...)
+void		display(int lim, ...)
 {
 	va_list	ap;
 	int		i;

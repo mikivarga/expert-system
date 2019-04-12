@@ -17,7 +17,6 @@ static int find(t_expert *data, char c, int flag)
     char *ptr;
     
     ptr = ft_strchr(data->solver, c);
-
     if (ptr)
     {
         if (STAT == flag)
