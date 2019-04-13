@@ -38,16 +38,11 @@
 # define MAX_READ 1024
 # define BUFF_SIZE (MAX_READ * 4)
 
-/*# define DATA 0*/
 # define STAT 1
 # define FACT 2
-/*# define SYSTEM 3*/
 # define MAX 27
 # define STATUS (MAX)
-# define FACTS (MAX * 2) 
-
-# define R (MAX)
-#define RUL_RES 2
+# define FACTS (MAX * 2)
 
 # define IS_COMMENT '#'
 # define FACTS_SMB '='
@@ -64,11 +59,24 @@ typedef struct s_expert
 
 int get_line(const int fd, char *line);
 int save_line(t_expert *data, char *str);
-void algorithm(t_expert *data, char *ptr, int i);
+//int save_facts_queries(t_expert *data, char *buf);
+int find(t_expert *data, char c, int flag);
+void algorithm(t_expert *data, char *ptr, int find, int i);
+
+int rules_is_true(t_expert *data, char *s, int status, int stop);
+int status_letter(t_expert *data, char *s, int i);
+void status_brackets(t_expert *data, char *s, int i, int *status);
+void status_and(t_expert *data, char *s, int i, int *status);
+int status_OR(t_expert *data, char *s, int i, int *status);
+void status_XOR(t_expert *data, char *s, int i, int *status);
+
+
 void show_err(const char *str);
 void show_err_parsing(const char *str, const char *buf);
-void		display(int lim, ...);
-
+void display(int lim, ...);
+void show(t_expert *data);
+void show_true_decision(char *rule, char *goal);
 
 void free_data(t_expert *data);
+void contradiction_exit(t_expert *data, char c);
 #endif

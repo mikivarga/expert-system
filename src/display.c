@@ -49,18 +49,39 @@ void		show_err_parsing(const char *str, const char *buf)
 	}
 }
 
-void free_data(t_expert *data)
+void show(t_expert *data)
 {
-	char **tmp;
+    char *ptr;
+    int i;
 
-	if (data->rules)
-	{
-		tmp = data->rules;
-		while (*tmp)
-		{
-			free(*tmp++);
-		}
-		free(data->rules);
-	}
-	exit(EXIT_FAILURE);
+    i = -1;
+    while (data->queries[++i])
+    {
+        ptr = ft_strchr(data->solver, data->queries[i]);
+        if (ptr)
+        {
+            ft_printf("%c", data->queries[i]);
+            if ('1' == *(ptr + STATUS) && '1' == *(ptr + FACTS))
+            {
+                display(3, " => [", PINK("AMBIGUOUS"), "]\n");
+            }
+            else if ('1' == *(ptr + STATUS) && '0' == *(ptr + FACTS))
+            {
+                display(3, " => [", GREEN("TRUE"), "]\n");
+            }
+            else
+            {
+                display(3, " => [", RED("FALSE"), "]\n");
+            }
+        }
+    }
+}
+
+void show_true_decision(char *rule, char *goal)
+{
+	display(4, "[", GREEN("GOAL"), "] ", GREEN("'"));
+	ft_printf("%s%s", goal, GREEN("' is"));
+	ft_printf(" %s %s", GREEN("TRUE"), YELLOW(" becouse "));
+	ft_printf("%s%s", YELLOW("[RULE] "), GREEN("'"));
+	display(3, rule, GREEN("' is TRUE now"), "\n");
 }

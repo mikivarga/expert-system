@@ -129,18 +129,14 @@ int				save_line(t_expert *data, char *buf)
 	char		str[BUFF_SIZE];
 
 	if (NULL != (ptr = ft_strchr(buf, IS_COMMENT)))
-	{
 		*ptr = '\0';
-	}
 	if (TRUE == EMPTY_LINE(*buf))
 		return (TRUE);
 	ptr = str;
 	while (*buf)
 	{
 		if (FALSE == IS_SPACE(*buf))
-		{
 			*ptr++ = *buf;
-		}
 		buf++;
 	}
 	*ptr = '\0';
