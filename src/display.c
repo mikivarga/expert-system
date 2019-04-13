@@ -18,7 +18,7 @@ void		display(int lim, ...)
 	int		i;
 
 	i = 0;
-	sleep(1);
+	//sleep(1);
 	va_start(ap, lim);
 	while (i++ < lim)
 	{

@@ -23,10 +23,12 @@ int find(t_expert *data, char c, int flag)
     {
         if (STAT == flag)
         {
+            ft_printf("current->STATUS %c\n", *(ptr + STATUS));
             return ('1' == *(ptr + STATUS));
         }
         else
         {
+            ft_printf("current->f_facts %c\n", *(ptr + FACTS));
             return ('1' == *(ptr + FACTS));
         }
     }
@@ -40,8 +42,9 @@ int rules_is_true(t_expert *data, char *s, int status, int stop)
     i = -1;
     while (s[++i])
     {
+        //ft_printf("IDIOT %s\n", &s[i]);
         if (TRUE == LETTER(s[i]))
-            status = (TRUE == status_letter(data, s, i) ? TRUE : status);
+            status_letter(data, s, i, &status);
         else if (TRUE == BRACKETS(s[i]))
             status_brackets(data, s, i, &status);
         else if (TRUE == AND(s[i]))
@@ -67,8 +70,8 @@ static int make_decision(t_expert *data, char *goal, char *rule, int fact)
 
     j = -1;                 
     while (rule[++j])
-    {
-        if (TRUE == (find(data, rule[j], FACT)))
+    {;
+        if (TRUE == find(data, rule[j], FACT))
         {
             fact = TRUE;
             break ;
@@ -83,7 +86,7 @@ static int make_decision(t_expert *data, char *goal, char *rule, int fact)
         return (FALSE);
     if ('1' == *(ptr + STATUS))
         return (FALSE);
-    //ft_printf("IDIOT\n");
+    ft_printf("IDIOT\n");
     *(ptr + STATUS) = '1';
     *(ptr + FACTS) = (TRUE == fact ? '1': '0');
     return (TRUE);
@@ -110,6 +113,10 @@ static int decision(t_expert *data, char *goal, char *rule, int *status)
            *status += make_decision(data, &(goal[i]), rule, FALSE);
         }
     }
+        if (FALSE != *status)///global)
+    {
+        ft_printf("\x1b[34m%s\x1b[0m is now true because \x1b[36m%s\x1b[0m is true and implies \x1b[34m%s\x1b[0m\n", goal, rule, goal);
+    }
     return (*status);
 }
 
@@ -126,20 +133,28 @@ void algorithm(t_expert *data, char *ptr, int find, int i)
         {
             if ((ptr = ft_strchr(data->rules[i], '>')))
                 rule_r = ptr + 1;;
-            *(ptr - 1) == '=' ? ptr-- : ptr;
+            *(ptr - 1) == '=' ? ptr-- : ptr;//??
             *(ptr) = '\0';
             rule_l = data->rules[i];
+            ft_printf("~rule_l %s\n", rule_l);     
             if (ft_strchr(rule_l, '<') && rules_is_true(data, rule_r, FALSE, FALSE))
             {
-                if (decision(data, rule_l, rule_r, &find) && find && data->view)
-                    show_true_decision(rule_l, rule_r);
+                //ft_printf("<rule_l %s\n", rule_l);
+                decision(data, rule_l, rule_r, &find);
+               //if (decision(data, rule_l, rule_r, &find) && find && data->view)
+               //     show_true_decision(rule_l, rule_r);
             }
             if (rules_is_true(data, rule_l, FALSE, FALSE))
             {
-                if (decision(data, rule_r, rule_l, &find) && find && data->view)
-                    show_true_decision(rule_l, rule_r);
+                //ft_printf("rule_l %s\n", rule_l);
+                //if (decision(data, rule_r, rule_l, &find) && find && data->view)
+                //    show_true_decision(rule_l, rule_r);
+                decision(data, rule_r, rule_l, &find);
             }
             *(ptr) = '=';
         }
+        ft_printf("\n  [DATA] = %s\n", data->solver);
+        ft_printf("[STATUS] = %s\n", data->solver + STATUS);
+        ft_printf(" [FACTS] = %s\n\n", data->solver + FACTS);
     }
 }

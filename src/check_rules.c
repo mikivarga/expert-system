@@ -1,16 +1,15 @@
 #include "expert_system.h"
 
-int status_letter(t_expert *data, char *s, int i)
+void status_letter(t_expert *data, char *s, int i, int *status)
 {
     if (find(data, s[i], STAT) && !NOT(s[i - 1]) && !XOR(s[i - 1]) && !AND(s[i - 1]))
     {
-        return (TRUE);
+        *status = TRUE;
     }
     else if (find(data, s[i - 1], FACT))
     {
-        return (TRUE);
+        *status = TRUE;
     }
-    return (FALSE);
 }
 
 void status_brackets(t_expert *data, char *s, int i, int *status)
@@ -58,13 +57,13 @@ int status_OR(t_expert *data, char *s, int i, int *status)
     {
         if (TRUE == LETTER(s[i + 1]) && TRUE == find(data, s[i + 1], STAT))
         {
-            ft_printf("OR %c\n", s[i + 1]);
+            //ft_printf("OR %c\n", s[i + 1]);
             *status = TRUE;
         }
         /**/
         else if (FALSE == find(data, s[i + 2], STAT))
         {
-            ft_printf("1OR %c\n", s[i + 2]);
+            //ft_printf("1OR %c\n", s[i + 2]);
             *status = TRUE;
         }/**/
         return(TRUE); 

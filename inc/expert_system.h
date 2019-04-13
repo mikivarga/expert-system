@@ -64,7 +64,7 @@ int find(t_expert *data, char c, int flag);
 void algorithm(t_expert *data, char *ptr, int find, int i);
 
 int rules_is_true(t_expert *data, char *s, int status, int stop);
-int status_letter(t_expert *data, char *s, int i);
+void status_letter(t_expert *data, char *s, int i, int *status);
 void status_brackets(t_expert *data, char *s, int i, int *status);
 void status_and(t_expert *data, char *s, int i, int *status);
 int status_OR(t_expert *data, char *s, int i, int *status);

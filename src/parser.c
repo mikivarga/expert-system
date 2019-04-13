@@ -86,7 +86,7 @@ static int		save_rules(t_expert *data, char *buf)
 	{
 		if (FALSE == LETTER(buf[0]))
 		{
-			printf("IDIOT\n");
+			//printf("IDIOT\n");
 			return FALSE;
 		}
 	}
