@@ -61,11 +61,12 @@ int status_OR(t_expert *data, char *s, int i, int *status)
             ft_printf("OR %c\n", s[i + 1]);
             *status = TRUE;
         }
+        /**/
         else if (FALSE == find(data, s[i + 2], STAT))
         {
             ft_printf("1OR %c\n", s[i + 2]);
             *status = TRUE;
-        }
+        }/**/
         return(TRUE); 
     }
     return (FALSE);

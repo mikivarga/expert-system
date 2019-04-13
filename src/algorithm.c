@@ -68,8 +68,11 @@ static int make_decision(t_expert *data, char *goal, char *rule, int fact)
     j = -1;                 
     while (rule[++j])
     {
-        if ('1' == (fact = (find(data, rule[j], FACT))))
+        if (TRUE == (find(data, rule[j], FACT)))
+        {
+            fact = TRUE;
             break ;
+        }
     }
     if (OR(*(goal - 1)) || OR(*(goal + 1)))
         fact = TRUE;
@@ -82,7 +85,7 @@ static int make_decision(t_expert *data, char *goal, char *rule, int fact)
         return (FALSE);
     //ft_printf("IDIOT\n");
     *(ptr + STATUS) = '1';
-    *(ptr + FACTS) = ('1' == fact ? '1': '0');
+    *(ptr + FACTS) = (TRUE == fact ? '1': '0');
     return (TRUE);
 }
 
